@@ -5,7 +5,21 @@
     <link rel="stylesheet" type="text/css" href = "/style.css">
 
     <script>
+        const handleResponse = async (response, method) => {
+            const content = document.querySelector('#content');
 
+            if(method && response.status !== 204){
+                const obj = await response.json();
+
+                console.log(obj);
+            }else{
+                //puts out nothing for now
+            }
+        }
+
+        const requestUpdate = (apiType, method) => {
+
+        }
     </script>
 </head>
 
@@ -22,12 +36,9 @@
             </label>
         </h2>
 
-        <form id="continentGet">
+        <form id="allCountry">
             <h2>/api/getAllCountries</h2>
-            <label for="continent">Continent: </label>
-            <input id="continentField" type="text" name="continent">
-            <br>
-            <button id="continentResponse" type="submit">Send Request</button>
+            <button id="allCountry" type="submit">Send Request</button>
         </form>
 
         <form>
@@ -39,8 +50,8 @@
         </form>
 
         <form>
-            <h2>/api/getCountryByContinent</h2>
-            <label for="continent">Continent: </label>
+            <h2>/api/getCountryByFirstLetter</h2>
+            <label for="continent">First Letter: </label>
             <input id="continentField" type="text" name="continent">
             <br>
             <button id="continentResponse" type="submit">Send Request</button>

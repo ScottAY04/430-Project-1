@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./src/server.js",
     "pretest": "eslint ./src --fix",
-    "test": "echo \"Test Comlpete\""
+    "test": "echo \"Test Complete\""
   },
   "author": "Scott Au Yeung",
   "license": "UNLICENSED",
