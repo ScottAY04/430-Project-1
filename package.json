@@ -1,0 +1,16 @@
+{
+  "name": "430-project-1",
+  "version": "1.0.0",
+  "description": "project 1 for 430 class",
+  "main": "eslint.config.js",
+  "scripts": {
+    "start":"node ./src/server.js",
+    "pretest":"eslint ./src --fix",
+    "test": "echo \"Test Comlpete"
+  },
+  "author": "Scott Au Yeung",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "eslint": "^10.0.0"
+  }
+}

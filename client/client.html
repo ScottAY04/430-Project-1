@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+    <title>Country API Project</title>
+    <link rel="stylesheet" type="text/css" href = "/style.css">
+
+    <script>
+
+    </script>
+</head>
+
+<body>
+    <h1>Countries API App</h1>
+    <section id="getHeadArea">
+        <!-- Get or head selector --->
+        <h2 id="methodType">
+            <label>
+                <input type="radio" name="method" value="GET" checked>GET
+            </label>
+            <label>
+                <input type="radio" name="method" value="HEAD">HEAD
+            </label>
+        </h2>
+
+        <form id="continentGet">
+            <h2>/api/getAllCountries</h2>
+            <label for="continent">Continent: </label>
+            <input id="continentField" type="text" name="continent">
+            <br>
+            <button id="continentResponse" type="submit">Send Request</button>
+        </form>
+
+        <form>
+            <h2>/api/getCountryByContinent</h2>
+            <label for="continent">Continent: </label>
+            <input id="continentField" type="text" name="continent">
+            <br>
+            <button id="continentResponse" type="submit">Send Request</button>
+        </form>
+
+        <form>
+            <h2>/api/getCountryByContinent</h2>
+            <label for="continent">Continent: </label>
+            <input id="continentField" type="text" name="continent">
+            <br>
+            <button id="continentResponse" type="submit">Send Request</button>
+        </form>
+
+        <form>
+            <h2>/api/getCountryByContinent</h2>
+            <label for="continent">Continent: </label>
+            <input id="continentField" type="text" name="continent">
+            <br>
+            <button id="continentResponse" type="submit">Send Request</button>
+        </form>
+    </section>
+    <section id="postArea">
+        <h2>Post Area</h2>
+        <form method="post">
+            <h2>/api/getCountryByContinent</h2>
+            <label for="continent">Continent: </label>
+            <input id="continentField" type="text" name="continent">
+            <br>
+            <button id="continentResponse" type="submit">Send Request</button>
+        </form>
+        <form method="post">
+            <h2>/api/getCountryByContinent</h2>
+            <label for="continent">Continent: </label>
+            <input id="continentField" type="text" name="continent">
+            <br>
+            <button id="continentResponse" type="submit">Send Request</button>
+        </form>
+    </section>
+</body>
+</html>
