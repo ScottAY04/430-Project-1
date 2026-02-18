@@ -4,13 +4,15 @@
   "description": "project 1 for 430 class",
   "main": "eslint.config.js",
   "scripts": {
-    "start":"node ./src/server.js",
-    "pretest":"eslint ./src --fix",
-    "test": "echo \"Test Comlpete"
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"Test Comlpete\""
   },
   "author": "Scott Au Yeung",
   "license": "UNLICENSED",
   "devDependencies": {
-    "eslint": "^10.0.0"
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.0",
+    "globals": "^17.3.0"
   }
 }

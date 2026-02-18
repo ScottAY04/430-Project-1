@@ -14,10 +14,10 @@
     <section id="getHeadArea">
         <!-- Get or head selector --->
         <h2 id="methodType">
-            <label>
+            <label for="methodType">
                 <input type="radio" name="method" value="GET" checked>GET
             </label>
-            <label>
+            <label for="methodType">
                 <input type="radio" name="method" value="HEAD">HEAD
             </label>
         </h2>
@@ -61,15 +61,17 @@
             <label for="continent">Continent: </label>
             <input id="continentField" type="text" name="continent">
             <br>
-            <button id="continentResponse" type="submit">Send Request</button>
+            <button type="submit">Send Request</button>
         </form>
         <form method="post">
             <h2>/api/getCountryByContinent</h2>
             <label for="continent">Continent: </label>
             <input id="continentField" type="text" name="continent">
             <br>
-            <button id="continentResponse" type="submit">Send Request</button>
+            <button type="submit">Send Request</button>
         </form>
+    </section>
+    <section id="content">
     </section>
 </body>
 </html>
