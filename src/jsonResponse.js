@@ -29,21 +29,43 @@ const getAllCountry = (request, response) => {
 const byContinent = (request, response) => {
     const regionGiven = request.answer;
     console.log(regionGiven);
-    let countData = {};
+
+    let contentOutput = [];
 
     //loops through every single country
     for(let i = 0; i< totalCountries();i++){
         if(countryData[i].region === 'Asia'){
-            countData += `${countryData[i].name}, `;
+            contentOutput.push(countryData[i]);
+            console.log(countData);
+        }
+    }
+    return respondJSON(request, response, 200, contentOutput);
+}
+
+const byLetter = (request, response) => {
+    //const {first, last} = request.answer;
+    let contentOutput = [];
+
+    for(let i = 0; i < totalCountries();i++){
+        if(countryData[i].name[0].toLowerCase() === 'a'){
+            //contentOutput.push(countryData[i].name);
+        }
+        if(countryData[i].name[countryData[i].name.length - 1].toLowerCase() === 'n'){
+            contentOutput.push(countryData[i].name);
         }
     }
 
-    countData = JSON.stringify(countData);
-    return respondJSON(request, response, 200, countData);
+    return respondJSON(request, response, 200, contentOutput);
 }
 
-const byFirstLetter = (request, response) => {
+const getCurrency = (request, response) => {
+    let countData = [];
 
+    for(let i =0;i<totalCountries();i++){
+        if(countryData[i].name.toLowerCase() === 'china'){
+            //cou
+        }
+    }
 }
 
 const notFound = (request, response) => {
@@ -58,5 +80,7 @@ const notFound = (request, response) => {
 module.exports = {
     getAllCountry,
     byContinent,
+    byLetter,
+    getCurrency,
     notFound
 }

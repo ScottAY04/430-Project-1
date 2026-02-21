@@ -69,6 +69,7 @@
                 method,
                 headers:{
                     'Content-Type': 'application/json',
+                    'Content-Length': answer.length,
                     'Accept': 'application/json',
                 },
                 answer: answer,
@@ -83,6 +84,7 @@
             //all get/head requests
             const getAll = document.querySelector('#allCountry');
             const byContinent = document.querySelector('#byContinent');
+            const byFirstLetter = document.querySelector('#firstLetter');
 
             const getAllCountries =(e) => {
                 e.preventDefault();
@@ -96,9 +98,16 @@
                 return false;
             }
 
+            const getByFirstLetter = (e) => {
+                e.preventDefault();
+                requestUpdate(methodType, byFirstLetter);
+                return false;
+            }
+
 
             getAll.addEventListener('submit', getAllCountries);
             byContinent.addEventListener('submit', getByContinent);
+            byFirstLetter.addEventListener('submit', getByFirstLetter);
         }
 
         window.onload = init;
@@ -121,30 +130,33 @@
         </h2>
 
             <form id="allCountry" action = '/allCountry'>
-                <h2>/api/getAllCountries</h2>
-                <button id="allCountryButton" type="submit">Send Request</button>
+                <h2>/getAllCountries</h2>
+                <button type="submit">Send Request</button>
             </form>
 
             <form id="byContinent" action = '/byContinent'>
-                <h2>/api/getCountryByContinent</h2>
+                <h2>/getCountryByContinent</h2>
                 <label for="continent">Continent: </label>
                 <input class="inputResponse" type="text" name="Continent">
                 <br>
-                <button id="continentResponse" type="submit">Send Request</button>
+                <button type="submit">Send Request</button>
             </form>
 
-            <form id="firstLetter" action="'/firstLetter">
-                <h2>/api/getCountryByFirstLetter</h2>
+            <form id="firstLetter" action="/byLetter">
+                <h2>/getCountryByLetter</h2>
                 <label for="continent">First Letter: </label>
                 <input class="inputResponse" type="text" name="First Letter">
                 <br>
-                <button id="continentResponse" type="submit">Send Request</button>
+                <label for="continent">Last Letter: </label>
+                <input class="inputResponse" type="text" name="Last Letter">
+                <br>
+                <button type="submit">Send Request</button>
             </form>
 
-            <form>
-                <h2>/api/getCountryByContinent</h2>
+            <form id="currency" action="/getCurrency">
+                <h2>/getCurrency</h2>
                 <label for="continent">Continent: </label>
-                <input class="inputResponse" type="text" name="continent">
+                <input class="inputResponse" type="text" name="Country">
                 <br>
                 <button id="continentResponse" type="submit">Send Request</button>
             </form>
