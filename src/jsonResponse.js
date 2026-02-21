@@ -1,6 +1,7 @@
 const fs = require('fs');
 const rawDATA = fs.readFileSync(`${__dirname}/../countries.json`);
 const countryData = JSON.parse(rawDATA);
+const totalCountries = () =>{return countryData.length};
 const contentOutput = {};
 
 const respondJSON = (request, response, status, object) => {
@@ -9,7 +10,11 @@ const respondJSON = (request, response, status, object) => {
         'Content-Type': 'application/json',
         'Content-Length': Buffer.byteLength(content, 'utf8'),
     });
-    if(request.method !== 'HEAD' || status !== 204){
+
+    //console.log(countryData[0].name);
+
+    //if it is a head request or updates nothing it doesn't write a response
+    if(request.method !== 'HEAD' && status !== 204){
         response.write(content);
     }
     response.end();
@@ -22,10 +27,33 @@ const getAllCountry = (request, response) => {
     return respondJSON(request, response, 200, responseJSON);
 }
 
-const NotFound = (request, response) => {
+const byContinent = (request, response) => {
+    const regionGiven = request.answer;
+    let countData = {};
 
+    //loops through every single country
+    for(let i = 0; i< totalCountries();i++){
+        if(countryData[i].region === regionGiven){
+            countData += countryData[i].name;
+        }
+    }
+
+    contentOutput = countData;
+
+    return respondJSON(request, response, 200, contentOutput);
 }
+
+const notFound = (request, response) => {
+    const responseJSON = {
+        message: 'The page you are looking for was not found.',
+        id: 'notFound',
+    };
+
+    respondJSON(request, response, 404, responseJSON);
+};
 
 module.exports = {
     getAllCountry,
+    byContinent,
+    notFound
 }
