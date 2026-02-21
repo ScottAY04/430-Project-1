@@ -60,19 +60,31 @@
             }
 
              //for the actual request stuff
-            const section = sectionGiven.getAttribute('action');
-            //let answer = sectionGiven.querySelector('.inputResponse').value;
+            let section = `${sectionGiven.getAttribute('action')}`;
+            ///byContinent?region=Asia
+            let queryString = `?`;
 
-            let answer = JSON.stringify(sectionGiven.querySelector('.inputResponse').value);
+            const amntInputs = sectionGiven.querySelectorAll('.inputResponse');
+            console.log(amntInputs);
+            for(let i = 0; i < amntInputs.length; i++){
+                if(amntInputs[i].value && i === 0){
+                    queryString += `${amntInputs[i].getAttribute('name')}=${amntInputs[i].value}`
+                }
+                if(amntInputs[i].value && i !== 0)
+                {
+                    queryString += `&${amntInputs[i].getAttribute('name')}=${amntInputs[i].value}`
+                }
+            }
+
+            section += queryString;
+            console.log(section);
 
             let response = await fetch (section, {
                 method,
                 headers:{
                     'Content-Type': 'application/json',
-                    'Content-Length': answer.length,
                     'Accept': 'application/json',
                 },
-                answer: answer,
             });
 
             handleResponse(response, method === 'get');
@@ -84,7 +96,8 @@
             //all get/head requests
             const getAll = document.querySelector('#allCountry');
             const byContinent = document.querySelector('#byContinent');
-            const byFirstLetter = document.querySelector('#firstLetter');
+            const byLetter = document.querySelector('#byLetter');
+            const getCurrency = document.querySelector('#currency');
 
             const getAllCountries =(e) => {
                 e.preventDefault();
@@ -98,16 +111,23 @@
                 return false;
             }
 
-            const getByFirstLetter = (e) => {
+            const getByLetter = (e) => {
                 e.preventDefault();
-                requestUpdate(methodType, byFirstLetter);
+                requestUpdate(methodType, byLetter);
+                return false;
+            }
+
+            const getCountryCurrency = (e)=> {
+                e.preventDefault();
+                requestUpdate(methodType, getCurrency);
                 return false;
             }
 
 
             getAll.addEventListener('submit', getAllCountries);
             byContinent.addEventListener('submit', getByContinent);
-            byFirstLetter.addEventListener('submit', getByFirstLetter);
+            byLetter.addEventListener('submit', getByLetter);
+            getCurrency.addEventListener('submit', getCountryCurrency);
         }
 
         window.onload = init;
@@ -136,44 +156,44 @@
 
             <form id="byContinent" action = '/byContinent'>
                 <h2>/getCountryByContinent</h2>
-                <label for="continent">Continent: </label>
-                <input class="inputResponse" type="text" name="Continent">
+                <label>Continent: </label>
+                <input class="inputResponse" type="text" name="region">
                 <br>
                 <button type="submit">Send Request</button>
             </form>
 
-            <form id="firstLetter" action="/byLetter">
+            <form id="byLetter" action="/byLetter">
                 <h2>/getCountryByLetter</h2>
-                <label for="continent">First Letter: </label>
-                <input class="inputResponse" type="text" name="First Letter">
+                <label >First Letter: </label>
+                <input class="inputResponse" type="text" name="first">
                 <br>
                 <label for="continent">Last Letter: </label>
-                <input class="inputResponse" type="text" name="Last Letter">
+                <input class="inputResponse" type="text" name="last">
                 <br>
                 <button type="submit">Send Request</button>
             </form>
 
             <form id="currency" action="/getCurrency">
                 <h2>/getCurrency</h2>
-                <label for="continent">Continent: </label>
-                <input class="inputResponse" type="text" name="Country">
+                <label >Country: </label>
+                <input class="inputResponse" type="text" name="country">
                 <br>
-                <button id="continentResponse" type="submit">Send Request</button>
+                <button type="submit">Send Request</button>
             </form>
     </section>
 
     <section id="postArea">
         <h2>Post Area</h2>
-        <form method="post">
-            <h2>/api/getCountryByContinent</h2>
+        <form id="famousLocation" action="/addFamousLocation" method="post">
+            <h2>/addFamousLocation</h2>
             <label for="continent">Continent: </label>
             <input id="continentField" type="text" name="continent">
             <br>
             <button type="submit">Send Request</button>
         </form>
-        <form method="post">
-            <h2>/api/getCountryByContinent</h2>
-            <label for="continent">Continent: </label>
+        <form id="rateCountry" action="/rateCountry" method="post">
+            <h2>/rateCountry</h2>
+            <label for="continent">Country: </label>
             <input id="continentField" type="text" name="continent">
             <br>
             <button type="submit">Send Request</button>

@@ -19,38 +19,46 @@ const respondJSON = (request, response, status, object) => {
     response.end();
 }
 
-const getAllCountry = (request, response) => {
+const getAllCountry = (request, response, parsedUrl) => {
     const responseJSON = {
         countryData,
     }
     return respondJSON(request, response, 200, responseJSON);
 }
 
-const byContinent = (request, response) => {
-    const regionGiven = request.answer;
-    console.log(regionGiven);
-
+const byContinent = (request, response, parsedUrl) => {
     let contentOutput = [];
+    //let filtered = countryData;
 
     //loops through every single country
+    const region = parsedUrl.searchParams.get('region');
+
+    // if(region){
+    //     filtered = filtered.filter((country)=>{
+    //         country.region.toLowerCase() === region.toLowerCase();
+    //     })
+    // }
+    // console.log(filtered);
+
     for(let i = 0; i< totalCountries();i++){
-        if(countryData[i].region === 'Asia'){
+        if(countryData[i].region.toLowerCase() === region.toLowerCase()){
             contentOutput.push(countryData[i]);
-            console.log(countData);
         }
     }
+
     return respondJSON(request, response, 200, contentOutput);
 }
 
-const byLetter = (request, response) => {
-    //const {first, last} = request.answer;
+const byLetter = (request, response, parsedUrl) => {
+    const first = parsedUrl.searchParams.get('first');
+    const last = parsedUrl.searchParams.get('last');
     let contentOutput = [];
 
     for(let i = 0; i < totalCountries();i++){
-        if(countryData[i].name[0].toLowerCase() === 'a'){
-            //contentOutput.push(countryData[i].name);
+        if(first && countryData[i].name[0].toLowerCase() === first.toLowerCase()){
+            contentOutput.push(countryData[i].name);
         }
-        if(countryData[i].name[countryData[i].name.length - 1].toLowerCase() === 'n'){
+        if(last && countryData[i].name[countryData[i].name.length - 1].toLowerCase() === last){
             contentOutput.push(countryData[i].name);
         }
     }
@@ -58,14 +66,16 @@ const byLetter = (request, response) => {
     return respondJSON(request, response, 200, contentOutput);
 }
 
-const getCurrency = (request, response) => {
-    let countData = [];
+const getCurrency = (request, response, parsedUrl) => {
+    const country = parsedUrl.searchParams.get('country');
+    let contentOutput = [];
 
     for(let i =0;i<totalCountries();i++){
-        if(countryData[i].name.toLowerCase() === 'china'){
-            //cou
+        if(countryData[i].name.toLowerCase() === country.toLowerCase()){
+            contentOutput.push(countryData[i].finance.currency);
         }
     }
+    return respondJSON(request, response, 200, contentOutput);
 }
 
 const notFound = (request, response) => {
