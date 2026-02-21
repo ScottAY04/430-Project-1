@@ -13,6 +13,36 @@ const urlStruct = {
     notFound: jsonHandler.notFound,
 }
 
+const parseBody = (request, response, handler) => {
+    const answer = [];
+
+    request.on('error', (err)=>{
+        console.dir(err);
+        response.statusCode = 400;
+        response.end();
+    })
+
+    request.on('data', (chunk)=>{
+        answer.push(chunk);
+    })
+
+    request.on('end', ()=>{
+    const bodyString = Buffer.concat(answer).toString();
+    const type = request.headers['content-type'];
+    if(type === 'application/x-www-form-urlencoded') {
+      request.body = query.parse(bodyString);
+    } else if (type === 'application/json') {
+      request.body = JSON.parse(bodyString);
+    } else {
+      response.writeHead(400, { 'Content-Type': 'application/json' });
+      response.write(JSON.stringify({ error: 'invalid data format' }));
+      return response.end();
+    }
+
+    handler(request, response);
+    })
+}
+
 const onRequest = (request, response) => {
     const protocol = request.connection.encrypted ? 'https' : 'http';
     const parsedUrl = new URL(request.url, `${protocol}://${request.headers.host}`);

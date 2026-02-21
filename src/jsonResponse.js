@@ -2,7 +2,6 @@ const fs = require('fs');
 const rawDATA = fs.readFileSync(`${__dirname}/../countries.json`);
 const countryData = JSON.parse(rawDATA);
 const totalCountries = () =>{return countryData.length};
-const contentOutput = {};
 
 const respondJSON = (request, response, status, object) => {
     const content = JSON.stringify(object);
@@ -29,18 +28,22 @@ const getAllCountry = (request, response) => {
 
 const byContinent = (request, response) => {
     const regionGiven = request.answer;
+    console.log(regionGiven);
     let countData = {};
 
     //loops through every single country
     for(let i = 0; i< totalCountries();i++){
-        if(countryData[i].region === regionGiven){
-            countData += countryData[i].name;
+        if(countryData[i].region === 'Asia'){
+            countData += `${countryData[i].name}, `;
         }
     }
 
-    contentOutput = countData;
+    countData = JSON.stringify(countData);
+    return respondJSON(request, response, 200, countData);
+}
 
-    return respondJSON(request, response, 200, contentOutput);
+const byFirstLetter = (request, response) => {
+
 }
 
 const notFound = (request, response) => {

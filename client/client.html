@@ -17,8 +17,9 @@
             }
         }
 
-        const requestUpdate = async (getHead ,sectionGiven) => {
-            let method ;
+        //request update with no input
+        const requestUpdateNoI = async (getHead ,sectionGiven) => {
+            let method;
             //for the get or head method
             {
                 //for the get or head response
@@ -33,13 +34,10 @@
             //for the actual request stuff
             const section = sectionGiven.getAttribute('action');
 
-            if(sectionGiven.getAttribute){
-
-            }
-
             let response = await fetch (section, {
                 method,
                 headers:{
+                    'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 },
             });
@@ -47,21 +45,60 @@
             handleResponse(response, method === 'get');
         }
 
-        
+        //normal request update with an input
+        const requestUpdate = async (getHead, sectionGiven) =>{
+            let method;
+            //for the get or head method
+            {
+                //for the get or head response
+                const methodSelector = getHead.querySelector('#getButton');
+                if(methodSelector.checked){
+                    method = methodSelector.getAttribute('value');
+                }else{
+                    method = 'head';
+                }
+            }
+
+             //for the actual request stuff
+            const section = sectionGiven.getAttribute('action');
+            //let answer = sectionGiven.querySelector('.inputResponse').value;
+
+            let answer = JSON.stringify(sectionGiven.querySelector('.inputResponse').value);
+
+            let response = await fetch (section, {
+                method,
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                answer: answer,
+            });
+
+            handleResponse(response, method === 'get');
+        }
 
         const init = () => {
             const methodType = document.querySelector('#methodType');
 
             //all get/head requests
             const getAll = document.querySelector('#allCountry');
+            const byContinent = document.querySelector('#byContinent');
 
             const getAllCountries =(e) => {
                 e.preventDefault();
-                requestUpdate(methodType, getAll);
+                requestUpdateNoI(methodType, getAll);
                 return false;
             }
 
+            const getByContinent = (e)=>{
+                e.preventDefault();
+                requestUpdate(methodType, byContinent);
+                return false;
+            }
+
+
             getAll.addEventListener('submit', getAllCountries);
+            byContinent.addEventListener('submit', getByContinent);
         }
 
         window.onload = init;
@@ -91,7 +128,7 @@
             <form id="byContinent" action = '/byContinent'>
                 <h2>/api/getCountryByContinent</h2>
                 <label for="continent">Continent: </label>
-                <input id="inputResponse" type="text" name="Continent">
+                <input class="inputResponse" type="text" name="Continent">
                 <br>
                 <button id="continentResponse" type="submit">Send Request</button>
             </form>
@@ -99,7 +136,7 @@
             <form id="firstLetter" action="'/firstLetter">
                 <h2>/api/getCountryByFirstLetter</h2>
                 <label for="continent">First Letter: </label>
-                <input id="inputResponse" type="text" name="First Letter">
+                <input class="inputResponse" type="text" name="First Letter">
                 <br>
                 <button id="continentResponse" type="submit">Send Request</button>
             </form>
@@ -107,7 +144,7 @@
             <form>
                 <h2>/api/getCountryByContinent</h2>
                 <label for="continent">Continent: </label>
-                <input id="inputResponse" type="text" name="continent">
+                <input class="inputResponse" type="text" name="continent">
                 <br>
                 <button id="continentResponse" type="submit">Send Request</button>
             </form>
