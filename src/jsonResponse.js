@@ -27,40 +27,73 @@ const getAllCountry = (request, response, parsedUrl) => {
 }
 
 const byContinent = (request, response, parsedUrl) => {
-    let contentOutput = [];
-    //let filtered = countryData;
+    let filtered = countryData;
 
     //loops through every single country
-    const region = parsedUrl.searchParams.get('region');
+    const regionGiven = parsedUrl.searchParams.get('region');
 
-    // if(region){
-    //     filtered = filtered.filter((country)=>{
-    //         country.region.toLowerCase() === region.toLowerCase();
-    //     })
-    // }
-    // console.log(filtered);
-
-    for(let i = 0; i< totalCountries();i++){
-        if(countryData[i].region.toLowerCase() === region.toLowerCase()){
-            contentOutput.push(countryData[i]);
+    //missing params
+    if(!regionGiven){
+        let responseJSON = {
+            id: 'missingParams',
+            message: 'Region is required.'
         }
+        return respondJSON(request, response, 400, responseJSON);
     }
 
+    let contentOutput = [];
+
+    //filters out the json
+    if(regionGiven){
+        filtered = filtered.filter((country)=>{
+            if(country.region.toLowerCase() === regionGiven.toLowerCase()){
+                contentOutput.push(country);
+            }
+        })
+    }
+
+    console.log(contentOutput);
     return respondJSON(request, response, 200, contentOutput);
 }
 
 const byLetter = (request, response, parsedUrl) => {
     const first = parsedUrl.searchParams.get('first');
     const last = parsedUrl.searchParams.get('last');
+
+    //requires inputs
+    if(!first && !last){
+        let responseJSON = {
+            id: 'missingParams',
+            message: 'At least one field needs to be filled.'
+        }
+        return respondJSON(request, response, 400, responseJSON);
+    }
+
+    let filtered = countryData;
     let contentOutput = [];
 
-    for(let i = 0; i < totalCountries();i++){
-        if(first && countryData[i].name[0].toLowerCase() === first.toLowerCase()){
-            contentOutput.push(countryData[i].name);
-        }
-        if(last && countryData[i].name[countryData[i].name.length - 1].toLowerCase() === last){
-            contentOutput.push(countryData[i].name);
-        }
+    if(first && !last){
+        filtered = filtered.filter((country)=>{
+            if(country.name.charAt(0).toLowerCase() === first.toLowerCase()){
+                contentOutput.push(country.name);
+            }
+        })
+        console.log(contentOutput);
+    }else if(!first && last){
+         filtered = filtered.filter((country)=>{
+            if(country.name.charAt(country.name.length-1).toLowerCase() === last.toLowerCase()){
+                contentOutput.push(country.name);
+            }
+        })
+        console.log(contentOutput);    
+    }else if(first && last){
+        //filter the first letters then filter the last letters
+        filtered = filtered.filter((country)=>{
+            if(country.name.charAt(0).toLowerCase() === first.toLowerCase() && 
+            country.name.charAt(country.name.length-1).toLowerCase() === last.toLowerCase()){
+                contentOutput.push(country.name);
+            }
+        })
     }
 
     return respondJSON(request, response, 200, contentOutput);
@@ -68,14 +101,45 @@ const byLetter = (request, response, parsedUrl) => {
 
 const getCurrency = (request, response, parsedUrl) => {
     const country = parsedUrl.searchParams.get('country');
-    let contentOutput = [];
 
-    for(let i =0;i<totalCountries();i++){
-        if(countryData[i].name.toLowerCase() === country.toLowerCase()){
-            contentOutput.push(countryData[i].finance.currency);
+    if(!country){
+        let responseJSON = {
+            id: 'missingParams',
+            message: 'Country is required.'
         }
+        return respondJSON(request, response, 400, responseJSON);
     }
+
+    let contentOutput = [];
+    let filtered = countryData;
+
+    //adds to the output
+    if(country){
+        filtered = filtered.filter((name)=>{
+            if(name.name.toLowerCase() === country.toLowerCase()){
+                contentOutput.push(name.finance.currency);
+            }
+        })
+    }
+
     return respondJSON(request, response, 200, contentOutput);
+}
+
+const addFamousLocation = (request, response) => {
+    const responseJSON = {
+        message: 'Both Country and Location required'
+    }
+
+    const {name, location} = request.body;
+
+    if(!name || !location){
+        responseJSON.id = 'missingParams';
+        return respondData(request, response, 400, responseJSON);
+    }
+
+    let responseCode = 204;
+
+
 }
 
 const notFound = (request, response) => {
