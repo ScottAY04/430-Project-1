@@ -40,15 +40,18 @@ const getCountry = (request, response, parsedUrl) => {
 
 
     let contentOutput = [];
-
+    let exist = false;
     countryData.filter((country)=>{
         if(country.name.toLowerCase() === countryGiven.toLowerCase()){
             contentOutput.push(country);
-        }else{
-            responseJSON.message = 'No country with this name.';
-            return respondJSON(request, response, 404, responseJSON)
+            exist = true;
         }
     });
+
+    if(!exist){
+        responseJSON.message = 'No such country exists';
+        return respondJSON(request, response, 404, responseJSON);
+    }
 
     return respondJSON(request, response, 200, contentOutput);
 }
@@ -70,14 +73,17 @@ const byContinent = (request, response, parsedUrl) => {
     let contentOutput = [];
 
     //filters out the json
+    let exist = false;
     countryData.filter((country)=>{
         if(country.region.toLowerCase() === regionGiven.toLowerCase()){
+            exist = true;
             contentOutput.push(country);
-        }else{
-            responseJSON.message = 'No such region exists.';
-            return respondJSON(request, response, 404, responseJSON);
         }
     })
+    if(!exist){
+        responseJSON.message = 'No such region exists';
+        return respondJSON(request, response, 404, responseJSON);
+    }
     return respondJSON(request, response, 200, contentOutput);
 }
 
@@ -135,17 +141,19 @@ const getCurrency = (request, response, parsedUrl) => {
     }
 
     let contentOutput = [];
-
+    let exist = false;
     //adds to the output
     countryData.filter((index)=>{
         if(index.name.toLowerCase() === country.toLowerCase()){
             contentOutput.push(index.finance);
-        }else{
-            responseJSON.message = 'No country with this name.';
-            return respondJSON(request, response, 404, responseJSON);
+            exist = true;
         }
     })
 
+    if(!exist){
+        responseJSON.message = 'No such country exists';
+        return respondJSON(request, response, 404, responseJSON);
+    }
     return respondJSON(request, response, 200, contentOutput);
 }
 
