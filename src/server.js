@@ -2,7 +2,6 @@ const http = require('http');
 const query = require('querystring');
 const htmlHandler = require('./htmlResponse.js');
 const jsonHandler = require('./jsonResponse.js');
-const { json } = require('stream/consumers');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
@@ -10,9 +9,12 @@ const urlStruct = {
     '/': htmlHandler.getIndex,
     '/style.css': htmlHandler.getCSS,
     '/allCountry': jsonHandler.getAllCountry,
-    '/byContinent': jsonHandler.byContinent,
-    '/byLetter': jsonHandler.byLetter,
+    '/getCountry': jsonHandler.getCountry,
+    '/getCountryByContinent': jsonHandler.byContinent,
+    '/getCountryByLetter': jsonHandler.byLetter,
     '/getCurrency': jsonHandler.getCurrency,
+    '/addFamousLocation': (request, response)=> parseBody(request, response, jsonHandler.addFamousLocation),
+    '/rateCountry': (request, response)=> parseBody(request, response, jsonHandler.rateCountry),
     notFound: jsonHandler.notFound,
 }
 

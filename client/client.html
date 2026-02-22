@@ -90,18 +90,49 @@
             handleResponse(response, method === 'get');
         }
 
+        const sendPost = async (sectionGiven)=> {
+            const url = sectionGiven.getAttribute('action');
+            const method = sectionGiven.getAttribute('method');
+
+            const name = sectionGiven.querySelector('#country').value;
+            const newData = sectionGiven.querySelector('#answer').value;
+
+            let formData = JSON.stringify({name, newData});
+
+            let response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Content-Length': formData.length,
+                    'Accept': 'application/json',
+                },
+                body: formData,
+            });
+
+            handleResponse(response, method === 'post')
+        }
+
         const init = () => {
             const methodType = document.querySelector('#methodType');
 
             //all get/head requests
             const getAll = document.querySelector('#allCountry');
+            const getSingle = document.querySelector('#getCountry');
             const byContinent = document.querySelector('#byContinent');
             const byLetter = document.querySelector('#byLetter');
             const getCurrency = document.querySelector('#currency');
+            const addFamousLocation = document.querySelector('#famousLocation');
+            const rateCountry = document.querySelector('#rateCountry');
 
             const getAllCountries =(e) => {
                 e.preventDefault();
                 requestUpdateNoI(methodType, getAll);
+                return false;
+            }
+
+            const getCountry = (e) => {
+                e.preventDefault();
+                requestUpdate(methodType, getSingle);
                 return false;
             }
 
@@ -123,11 +154,26 @@
                 return false;
             }
 
+            const addFamous = (e) => {
+                e.preventDefault();
+                sendPost(addFamousLocation);
+                return false;
+            }
+
+            const addRating = (e) => {
+                e.preventDefault();
+                sendPost(rateCountry);
+                return false;
+            }
+
 
             getAll.addEventListener('submit', getAllCountries);
+            getSingle.addEventListener('submit', getCountry);
             byContinent.addEventListener('submit', getByContinent);
             byLetter.addEventListener('submit', getByLetter);
             getCurrency.addEventListener('submit', getCountryCurrency);
+            addFamousLocation.addEventListener('submit', addFamous);
+            rateCountry.addEventListener('submit', addRating);
         }
 
         window.onload = init;
@@ -140,21 +186,29 @@
         <!-- Get or head selector --->
         <h2>
             <section id="methodType">
-                <label for="methodType">
+                <label>
                 <input id="getButton" type="radio" name="method" value="GET" checked>GET
             </label>
-            <label for="methodType">
+            <label>
                 <input type="radio" name="method" value="HEAD">HEAD
             </label>
             </section>
         </h2>
 
             <form id="allCountry" action = '/allCountry'>
-                <h2>/getAllCountries</h2>
+                <h2>/allCountries</h2>
                 <button type="submit">Send Request</button>
             </form>
 
-            <form id="byContinent" action = '/byContinent'>
+            <form id="getCountry" action = '/getCountry'>
+                <h2>/getCountry</h2>
+                <label>Country: </label>
+                <input class="inputResponse" type="text" name="name">
+                <br>
+                <button type="submit">Send Request</button>
+            </form>
+
+            <form id="byContinent" action = '/getCountryByContinent'>
                 <h2>/getCountryByContinent</h2>
                 <label>Continent: </label>
                 <input class="inputResponse" type="text" name="region">
@@ -162,12 +216,12 @@
                 <button type="submit">Send Request</button>
             </form>
 
-            <form id="byLetter" action="/byLetter">
+            <form id="byLetter" action="/getCountryByLetter">
                 <h2>/getCountryByLetter</h2>
                 <label >First Letter: </label>
                 <input class="inputResponse" type="text" name="first">
                 <br>
-                <label for="continent">Last Letter: </label>
+                <label>Last Letter: </label>
                 <input class="inputResponse" type="text" name="last">
                 <br>
                 <button type="submit">Send Request</button>
@@ -186,21 +240,21 @@
         <h2>Post Area</h2>
         <form id="famousLocation" action="/addFamousLocation" method="post">
             <h2>/addFamousLocation</h2>
-            <label for="continent">Continent: </label>
-            <input type="text">
+            <label>Country: </label>
+            <input id="country" type="text">
             <br>
-            <label for="continent">Location: </label>
-            <input type="text">
+            <label>Location: </label>
+            <input id="answer" type="text">
             <br>
             <button type="submit">Send Request</button>
         </form>
         <form id="rateCountry" action="/rateCountry" method="post">
             <h2>/rateCountry</h2>
             <label>Country: </label>
-            <input type="text">
+            <input id="country" type="text">
             <br>
             <label>Rating: </label>
-            <input type="text">
+            <input id="answer" type="text">
             <br>
             <button type="submit">Send Request</button>
         </form>
