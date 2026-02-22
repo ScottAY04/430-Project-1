@@ -26,21 +26,27 @@ const getAllCountry = (request, response, parsedUrl) => {
 
 const getCountry = (request, response, parsedUrl) => {
     const countryGiven = parsedUrl.searchParams.get('name');
+    let responseJSON = {};
 
     //no parameters
     if(!countryGiven){
-        let responseJSON = {
+        responseJSON = {
             id: 'missingParams',
             message: 'Country is required.'
         }
         return respondJSON(request, response, 400, responseJSON);
     }
 
+
+
     let contentOutput = [];
 
     countryData.filter((country)=>{
         if(country.name.toLowerCase() === countryGiven.toLowerCase()){
             contentOutput.push(country);
+        }else{
+            responseJSON.message = 'No country with this name.';
+            return respondJSON(request, response, 404, responseJSON)
         }
     });
 
@@ -50,10 +56,11 @@ const getCountry = (request, response, parsedUrl) => {
 const byContinent = (request, response, parsedUrl) => {
     //loops through every single country
     const regionGiven = parsedUrl.searchParams.get('region');
+    let responseJSON = {};
 
     //missing params
     if(!regionGiven){
-        let responseJSON = {
+        responseJSON = {
             id: 'missingParams',
             message: 'Region is required.'
         }
@@ -66,6 +73,9 @@ const byContinent = (request, response, parsedUrl) => {
     countryData.filter((country)=>{
         if(country.region.toLowerCase() === regionGiven.toLowerCase()){
             contentOutput.push(country);
+        }else{
+            responseJSON.message = 'No such region exists.';
+            return respondJSON(request, response, 404, responseJSON);
         }
     })
     return respondJSON(request, response, 200, contentOutput);
@@ -74,10 +84,11 @@ const byContinent = (request, response, parsedUrl) => {
 const byLetter = (request, response, parsedUrl) => {
     const first = parsedUrl.searchParams.get('first');
     const last = parsedUrl.searchParams.get('last');
+    let responseJSON = {};
 
     //requires inputs
     if(!first && !last){
-        let responseJSON = {
+        responseJSON = {
             id: 'missingParams',
             message: 'At least one field needs to be filled.'
         }
@@ -113,9 +124,10 @@ const byLetter = (request, response, parsedUrl) => {
 
 const getCurrency = (request, response, parsedUrl) => {
     const country = parsedUrl.searchParams.get('country');
+    let responseJSON = {};
 
     if(!country){
-        let responseJSON = {
+        responseJSON = {
             id: 'missingParams',
             message: 'Country is required.'
         }
@@ -128,6 +140,9 @@ const getCurrency = (request, response, parsedUrl) => {
     countryData.filter((index)=>{
         if(index.name.toLowerCase() === country.toLowerCase()){
             contentOutput.push(index.finance);
+        }else{
+            responseJSON.message = 'No country with this name.';
+            return respondJSON(request, response, 404, responseJSON);
         }
     })
 
