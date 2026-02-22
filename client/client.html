@@ -219,10 +219,10 @@
             <form id="byLetter" action="/getCountryByLetter">
                 <h2>/getCountryByLetter</h2>
                 <label >First Letter: </label>
-                <input class="inputResponse" type="text" name="first">
+                <input class="inputResponse" type="text" name="first" maxlength="1">
                 <br>
                 <label>Last Letter: </label>
-                <input class="inputResponse" type="text" name="last">
+                <input class="inputResponse" type="text" name="last" maxlength="1">
                 <br>
                 <button type="submit">Send Request</button>
             </form>
@@ -253,8 +253,8 @@
             <label>Country: </label>
             <input id="country" type="text">
             <br>
-            <label>Rating: </label>
-            <input id="answer" type="text">
+            <label>Rating(1-5): </label>
+            <input id="answer" type="number" min="1" max="5">
             <br>
             <button type="submit">Send Request</button>
         </form>
