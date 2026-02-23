@@ -17,7 +17,6 @@ const respondJSON = (request, response, status, object) => {
 }
 
 const getAllCountry = (request, response, parsedUrl) => {
-    parsedUrl;
     const responseJSON = {
         countryData,
     }
@@ -187,10 +186,11 @@ const addFamousLocation = (request, response) => {
     //if there isn't a duplicate name it makes a new country with the location in it
     if(!dupName){
         responseCode = 201;
-        countryData[name] = {
+        let newCountry = {
             name:name,
             famousLocation: newData,
         }
+        countryData.push(newCountry);
     }
 
     if(responseCode === 201){
@@ -222,7 +222,7 @@ const rateCountry = (request, response) => {
     //if there is a duplicate name updates that country and add a famous location
     countryData.filter((country)=> {
         if(country.name.toLowerCase() === name.toLowerCase()){
-         
+        
             country.rating = newData;
         }
     });
@@ -230,10 +230,11 @@ const rateCountry = (request, response) => {
      //if there isn't a duplicate name it makes a new country with the location in it
     if(!dupName){
         responseCode = 201;
-        countryData[name] = {
+        let newCountry = {
             name:name,
             rating: newData,
         }
+        countryData.push(newCountry);
     }
 
     if(responseCode === 201){
