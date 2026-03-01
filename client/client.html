@@ -8,10 +8,34 @@
         const handleResponse = async (response, method) => {
             const content = document.querySelector('#content');
 
+            switch(response.status) {
+                case 200: 
+                content.innerHTML = `<b>Success</b>`;
+                break;
+                case 201:
+                content.innerHTML = `<b>Created</b>`;
+                break;
+                case 204:
+                content.innerHTML = `<b>Updated(No Content)</b>`;
+                break;
+                case 400: 
+                content.innerHTML = `<b>Bad Request</b>`;
+                break;
+                case 404:
+                content.innerHTML = `<b>Not Found</b>`;
+                break;
+                default: 
+                content.innerHTML = `Error code not implemented by client.`;
+                break;
+            }
 
-
+            console.log(method);
             if(method && response.status !== 204){
                 const obj = await response.json();
+                if(obj.message){
+                    content.innerHTML += `<p>${obj.message}</p>`;
+                    console.log(obj);
+                };
             }else{
                 //puts out nothing for now
             }
@@ -42,7 +66,7 @@
                 },
             });
 
-            handleResponse(response, method === 'get');
+            handleResponse(response, method === 'GET');
         }
 
         //normal request update with an input
@@ -55,7 +79,7 @@
                 if(methodSelector.checked){
                     method = methodSelector.getAttribute('value');
                 }else{
-                    method = 'head';
+                    method = 'HEAD';
                 }
             }
 
@@ -87,7 +111,7 @@
                 },
             });
 
-            handleResponse(response, method === 'get');
+            handleResponse(response, method === 'GET');
         }
 
         const sendPost = async (sectionGiven)=> {
@@ -182,82 +206,84 @@
 
 <body>
     <h1>Countries API App</h1>
-    <section id="getHeadArea">
-        <!-- Get or head selector --->
-        <h2>
-            <section id="methodType">
+    <section id="container">
+        <section id="getHeadArea">
+            <!-- Get or head selector --->
+            <h2>
+                <section id="methodType">
+                    <label>
+                    <input id="getButton" type="radio" name="method" value="GET" checked>GET
+                </label>
                 <label>
-                <input id="getButton" type="radio" name="method" value="GET" checked>GET
-            </label>
-            <label>
-                <input type="radio" name="method" value="HEAD">HEAD
-            </label>
-            </section>
-        </h2>
+                    <input type="radio" name="method" value="HEAD">HEAD
+                </label>
+                </section>
+            </h2>
 
-            <form id="allCountry" action = '/allCountry'>
-                <h2>/allCountries</h2>
-                <button type="submit">Send Request</button>
-            </form>
+                <form id="allCountry" action = '/allCountry'>
+                    <h2>/allCountries</h2>
+                    <button type="submit">Send Request</button>
+                </form>
 
-            <form id="getCountry" action = '/getCountry'>
-                <h2>/getCountry</h2>
+                <form id="getCountry" action = '/getCountry'>
+                    <h2>/getCountry</h2>
+                    <label>Country: </label>
+                    <input class="inputResponse" type="text" name="name">
+                    <br>
+                    <button type="submit">Send Request</button>
+                </form>
+
+                <form id="byContinent" action = '/getCountryByContinent'>
+                    <h2>/getCountryByContinent</h2>
+                    <label>Continent: </label>
+                    <input class="inputResponse" type="text" name="region">
+                    <br>
+                    <button type="submit">Send Request</button>
+                </form>
+
+                <form id="byLetter" action="/getCountryByLetter">
+                    <h2>/getCountryByLetter</h2>
+                    <label >First Letter: </label>
+                    <input class="inputResponse" type="text" name="first" maxlength="1">
+                    <br>
+                    <label>Last Letter: </label>
+                    <input class="inputResponse" type="text" name="last" maxlength="1">
+                    <br>
+                    <button type="submit">Send Request</button>
+                </form>
+
+                <form id="currency" action="/getCurrency">
+                    <h2>/getCurrency</h2>
+                    <label >Country: </label>
+                    <input class="inputResponse" type="text" name="country">
+                    <br>
+                    <button type="submit">Send Request</button>
+                </form>
+        </section>
+
+        <section id="postArea">
+            <h2>Post Area</h2>
+            <form id="famousLocation" action="/addFamousLocation" method="post">
+                <h2>/addFamousLocation</h2>
                 <label>Country: </label>
-                <input class="inputResponse" type="text" name="name">
+                <input id="country" type="text">
+                <br>
+                <label>Location: </label>
+                <input id="answer" type="text">
                 <br>
                 <button type="submit">Send Request</button>
             </form>
-
-            <form id="byContinent" action = '/getCountryByContinent'>
-                <h2>/getCountryByContinent</h2>
-                <label>Continent: </label>
-                <input class="inputResponse" type="text" name="region">
+            <form id="rateCountry" action="/rateCountry" method="post">
+                <h2>/rateCountry</h2>
+                <label>Country: </label>
+                <input id="country" type="text">
+                <br>
+                <label>Rating(1-5): </label>
+                <input id="answer" type="number" min="1" max="5">
                 <br>
                 <button type="submit">Send Request</button>
             </form>
-
-            <form id="byLetter" action="/getCountryByLetter">
-                <h2>/getCountryByLetter</h2>
-                <label >First Letter: </label>
-                <input class="inputResponse" type="text" name="first" maxlength="1">
-                <br>
-                <label>Last Letter: </label>
-                <input class="inputResponse" type="text" name="last" maxlength="1">
-                <br>
-                <button type="submit">Send Request</button>
-            </form>
-
-            <form id="currency" action="/getCurrency">
-                <h2>/getCurrency</h2>
-                <label >Country: </label>
-                <input class="inputResponse" type="text" name="country">
-                <br>
-                <button type="submit">Send Request</button>
-            </form>
-    </section>
-
-    <section id="postArea">
-        <h2>Post Area</h2>
-        <form id="famousLocation" action="/addFamousLocation" method="post">
-            <h2>/addFamousLocation</h2>
-            <label>Country: </label>
-            <input id="country" type="text">
-            <br>
-            <label>Location: </label>
-            <input id="answer" type="text">
-            <br>
-            <button type="submit">Send Request</button>
-        </form>
-        <form id="rateCountry" action="/rateCountry" method="post">
-            <h2>/rateCountry</h2>
-            <label>Country: </label>
-            <input id="country" type="text">
-            <br>
-            <label>Rating(1-5): </label>
-            <input id="answer" type="number" min="1" max="5">
-            <br>
-            <button type="submit">Send Request</button>
-        </form>
+        </section>
     </section>
     <section id="content">
     </section>

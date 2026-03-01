@@ -17,8 +17,10 @@ const respondJSON = (request, response, status, object) => {
 }
 
 const getAllCountry = (request, response, parsedUrl) => {
+    parsedUrl;
     const responseJSON = {
-        countryData,
+        countryData, 
+        message: `${JSON.stringify(countryData)}`,
     }
     return respondJSON(request, response, 200, responseJSON);
 }
@@ -47,12 +49,14 @@ const getCountry = (request, response, parsedUrl) => {
         }
     });
 
+    responseJSON.message = `${JSON.stringify(contentOutput)}`;
+
     if(!exist){
         responseJSON.message = 'No such country exists';
         return respondJSON(request, response, 404, responseJSON);
     }
 
-    return respondJSON(request, response, 200, contentOutput);
+    return respondJSON(request, response, 200, responseJSON);
 }
 
 const byContinent = (request, response, parsedUrl) => {
@@ -79,16 +83,20 @@ const byContinent = (request, response, parsedUrl) => {
             contentOutput.push(country);
         }
     })
+
+    responseJSON.message = `${JSON.stringify(contentOutput)}`;
+
     if(!exist){
         responseJSON.message = 'No such region exists';
         return respondJSON(request, response, 404, responseJSON);
     }
-    return respondJSON(request, response, 200, contentOutput);
+    return respondJSON(request, response, 200, responseJSON);
 }
 
 const byLetter = (request, response, parsedUrl) => {
     const first = parsedUrl.searchParams.get('first');
     const last = parsedUrl.searchParams.get('last');
+    let contentOutput = [];
     let responseJSON = {};
 
     //requires inputs
@@ -100,7 +108,6 @@ const byLetter = (request, response, parsedUrl) => {
         return respondJSON(request, response, 400, responseJSON);
     }
 
-    let contentOutput = [];
 
     if(first && !last){
         countryData.filter((country)=>{
@@ -108,13 +115,17 @@ const byLetter = (request, response, parsedUrl) => {
                 contentOutput.push(country.name);
             }
         })
-    }else if(!first && last){
+        responseJSON.message = `${JSON.stringify(contentOutput)}`;
+    }
+    if(!first && last){
          countryData.filter((country)=>{
             if(country.name.charAt(country.name.length-1).toLowerCase() === last.toLowerCase()){
                 contentOutput.push(country.name);
             }
         })  
-    }else if(first && last){
+        responseJSON.message = `${JSON.stringify(contentOutput)}`;
+    }
+    if(first && last){
         //filter the first letters then filter the last letters
         countryData.filter((country)=>{
             if(country.name.charAt(0).toLowerCase() === first.toLowerCase() && 
@@ -122,9 +133,10 @@ const byLetter = (request, response, parsedUrl) => {
                 contentOutput.push(country.name);
             }
         })
+        responseJSON.message = `${JSON.stringify(contentOutput)}`;
     }
 
-    return respondJSON(request, response, 200, contentOutput);
+    return respondJSON(request, response, 200, responseJSON);
 }
 
 const getCurrency = (request, response, parsedUrl) => {
@@ -149,11 +161,13 @@ const getCurrency = (request, response, parsedUrl) => {
         }
     })
 
+    responseJSON.message = `${JSON.stringify(contentOutput)}`;
+
     if(!exist){
         responseJSON.message = 'No such country exists';
         return respondJSON(request, response, 404, responseJSON);
     }
-    return respondJSON(request, response, 200, contentOutput);
+    return respondJSON(request, response, 200, responseJSON);
 }
 
 const addFamousLocation = (request, response) => {
@@ -222,7 +236,7 @@ const rateCountry = (request, response) => {
     //if there is a duplicate name updates that country and add a famous location
     countryData.filter((country)=> {
         if(country.name.toLowerCase() === name.toLowerCase()){
-        
+            dupName = true;
             country.rating = newData;
         }
     });

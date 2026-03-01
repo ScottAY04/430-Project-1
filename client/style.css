@@ -1,0 +1,32 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#container{
+    display: flex;
+}
+
+#getHeadArea {
+  text-align: center;
+  margin: 0 auto;
+}
+
+#postArea{
+  text-align: center;
+  margin: 0 auto;
+}
+
+
+h1 {
+  text-align: center;
+  font-size: 2em;
+}
+
+#content {
+  margin-top: 100px;
+  font-size: 2em;
+  text-align: center;
+}
