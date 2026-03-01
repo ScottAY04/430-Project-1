@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+    <title>Country API Documentation</title>
+</head>
+<body>
+    <h1>Countries API Doc</h1>
+    <section id="container">
+                <form id="allCountry" action = '/allCountry'>
+                    <h2>/allCountries</h2>
+                    <h3>Query Params</h3>
+                    <p>None</p>
+                    <h3>Returns</h3>
+                    <p>Json array of a country object</p>
+                    <p>Format: [{"name": string,
+    "capital": string,
+    "finance": {
+      "currency": string,
+      "currency_name": string,
+      "currency_symbol": string
+    },
+    "region": string,
+    "subregion": string,
+    "nationality": string,
+    "timezones": [
+      {
+        "zoneName": string,
+        "gmtOffset": number,
+        "gmtOffsetName": string,
+        "abbreviation": string,
+        "tzName": string
+      }
+    ],
+    "latitude": string,
+    "longitude": string}]</p>
+                </form>
+
+                <form id="getCountry" action = '/getCountry'>
+                    <h2>/getCountry</h2>
+                    <h3>Query Params</h3>
+                    <p>name: the country name</p>
+                    <h3>Returns</h3>
+                    <p>Json array of a country object</p>
+                    <p>Format: [{"name": string,
+    "capital": string,
+    "finance": {
+      "currency": string,
+      "currency_name": string,
+      "currency_symbol": string
+    },
+    "region": string,
+    "subregion": string,
+    "nationality": string,
+    "timezones": [
+      {
+        "zoneName": string,
+        "gmtOffset": number,
+        "gmtOffsetName": string,
+        "abbreviation": string,
+        "tzName": string
+      }
+    ],
+    "latitude": string,
+    "longitude": string}]</p>
+                    
+                </form>
+
+                <form id="byContinent" action = '/getCountryByContinent'>
+                    <h2>/getCountryByContinent</h2>
+                    <h3>Query Params</h3>
+                    <p>region: the continent/region name</p>
+                    <h3>Returns</h3>
+                    <p>{"name": string}</p>
+                </form>
+
+                <form id="byLetter" action="/getCountryByLetter">
+                    <h2>/getCountryByLetter</h2>
+                    <h3>Query Params</h3>
+                    <p>first: first letter of a country name</p>
+                    <p>last: last letter of a country name</p>
+                    <h3>Returns</h3>
+                    <p>{"name": string}</p>
+
+                </form>
+
+                <form id="currency" action="/getCurrency">
+                    <h2>/getCurrency</h2>
+                    <h3>Query Params</h3>
+                    <p>country: the country's name</p>
+                    <h3>Returns</h3>
+                    <p>"finance": {
+      "currency": string,
+      "currency_name": string,
+      "currency_symbol": string
+    }</p>
+                </form>
+        </section>
+
+        <section id="postArea">
+            <h2>Post Area</h2>
+            <form id="famousLocation" action="/addFamousLocation" method="post">
+                <h2>/addFamousLocation</h2>
+                <h3>Supported Formats</h3>
+                <p>application/json and application/x-www-form-urlencoded</p>
+                <h3>Body Params</h3>
+                <p>name: string type(the name of the country)</p>
+                <p>famousLocation: string type(name of a famous location)</p>
+
+            </form>
+            <form id="rateCountry" action="/rateCountry" method="post">
+                <h2>/rateCountry</h2>
+                <h3>Supported Formats</h3>
+                <p>application/json and application/x-www-form-urlencoded</p>
+                <h3>Body Params</h3>
+                <p>name: string type(the name of the country)</p>
+                <p>rating: int type(rating of a country you give)</p>
+            </form>
+        </section>
+    </section>
+    <section id="content">
+    </section>
+</body>
+</html>
